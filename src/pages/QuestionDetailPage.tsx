@@ -16,6 +16,7 @@ import {
   Award
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import AnswerInterface from "@/components/questions/AnswerInterface";
 
 // Mock data for demonstration
 const mockQuestion = {
@@ -84,7 +85,16 @@ This gives you excellent TypeScript support and is much simpler than Redux for m
       authorReputation: 3420,
       votes: 8,
       isAccepted: true,
-      createdAt: "1 hour ago"
+      isPinned: false,
+      createdAt: "1 hour ago",
+      comments: [
+        {
+          id: "1",
+          content: "Great explanation! This helped me understand the differences between state management libraries.",
+          author: "learnercoder",
+          createdAt: "30 minutes ago"
+        }
+      ]
     },
     {
       id: "2",
@@ -111,7 +121,9 @@ The key is to separate server state (data from APIs) from client state (UI state
       authorReputation: 2100,
       votes: 3,
       isAccepted: false,
-      createdAt: "30 minutes ago"
+      isPinned: true,
+      createdAt: "30 minutes ago",
+      comments: []
     }
   ]
 };
@@ -141,6 +153,20 @@ const QuestionDetailPage = () => {
     toast({
       title: "Vote recorded",
       description: `Your ${direction}vote has been recorded.`
+    });
+  };
+
+  const handleAcceptAnswer = (answerId: string) => {
+    toast({
+      title: "Answer accepted",
+      description: "This answer has been marked as the solution."
+    });
+  };
+
+  const handlePinAnswer = (answerId: string) => {
+    toast({
+      title: "Answer pinned",
+      description: "This answer has been pinned to the top."
     });
   };
 
@@ -248,65 +274,14 @@ const QuestionDetailPage = () => {
         </h2>
 
         {mockQuestion.answers.map((answer) => (
-          <Card key={answer.id} className={answer.isAccepted ? "border-success" : ""}>
-            <CardContent className="p-6">
-              <div className="flex gap-6">
-                {/* Vote Section */}
-                <div className="flex flex-col items-center space-y-2 min-w-[60px]">
-                  <Button
-                    variant="vote"
-                    size="icon"
-                    onClick={() => handleVote('answer', answer.id, 'up')}
-                  >
-                    <ArrowUp className="w-5 h-5" />
-                  </Button>
-                  <span className="text-lg font-semibold">{answerVotes[answer.id]}</span>
-                  <Button
-                    variant="vote"
-                    size="icon"
-                    onClick={() => handleVote('answer', answer.id, 'down')}
-                  >
-                    <ArrowDown className="w-5 h-5" />
-                  </Button>
-                  {answer.isAccepted && (
-                    <div className="text-success" title="Accepted Answer">
-                      <Check className="w-6 h-6 fill-current" />
-                    </div>
-                  )}
-                </div>
-
-                {/* Answer Content */}
-                <div className="flex-1 space-y-4">
-                  <div className="prose prose-sm max-w-none">
-                    <div className="whitespace-pre-wrap text-foreground">
-                      {answer.content}
-                    </div>
-                  </div>
-
-                  {/* Answer Meta */}
-                  <div className="flex justify-end">
-                    <div className="flex items-center gap-3 bg-accent-light p-3 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                          <User className="w-4 h-4 text-primary-foreground" />
-                        </div>
-                        <div>
-                          <div className="font-medium text-sm">{answer.author}</div>
-                          <div className="text-xs text-muted-foreground flex items-center gap-1">
-                            <Award className="w-3 h-3" />
-                            {answer.authorReputation}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        answered {answer.createdAt}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <AnswerInterface
+            key={answer.id}
+            answer={answer}
+            isQuestionAuthor={true} // This would be determined by actual auth state
+            onVote={(answerId, direction) => handleVote('answer', answerId, direction)}
+            onAccept={handleAcceptAnswer}
+            onPin={handlePinAnswer}
+          />
         ))}
       </div>
 

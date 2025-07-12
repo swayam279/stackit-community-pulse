@@ -1,7 +1,10 @@
-import { Search, Bell, User, Plus } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
+import ThemeToggle from "./ThemeToggle";
+import NotificationDropdown from "./NotificationDropdown";
+import ProfileDropdown from "./ProfileDropdown";
 
 const Header = () => {
   return (
@@ -28,7 +31,7 @@ const Header = () => {
         </div>
 
         {/* Right Side Actions */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2">
           <Link to="/ask">
             <Button variant="default" size="sm">
               <Plus className="w-4 h-4" />
@@ -36,16 +39,9 @@ const Header = () => {
             </Button>
           </Link>
 
-          <Button variant="ghost" size="icon" className="relative">
-            <Bell className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full text-xs w-5 h-5 flex items-center justify-center">
-              3
-            </span>
-          </Button>
-
-          <Button variant="ghost" size="icon">
-            <User className="w-5 h-5" />
-          </Button>
+          <ThemeToggle />
+          <NotificationDropdown />
+          <ProfileDropdown />
         </div>
       </div>
     </header>

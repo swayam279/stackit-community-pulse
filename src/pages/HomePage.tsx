@@ -73,7 +73,7 @@ const HomePage = () => {
       {/* Sort Tabs */}
       <Tabs value={sortBy} onValueChange={setSortBy} className="w-full">
         <div className="flex justify-between items-center">
-          <TabsList className="grid w-fit grid-cols-3">
+          <TabsList className="grid w-fit grid-cols-2">
             <TabsTrigger value="newest" className="flex items-center gap-2">
               <Clock className="w-4 h-4" />
               Newest
@@ -81,10 +81,6 @@ const HomePage = () => {
             <TabsTrigger value="trending" className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
               Trending
-            </TabsTrigger>
-            <TabsTrigger value="unanswered" className="flex items-center gap-2">
-              <Star className="w-4 h-4" />
-              Unanswered
             </TabsTrigger>
           </TabsList>
 
@@ -107,19 +103,6 @@ const HomePage = () => {
             ))}
         </TabsContent>
 
-        <TabsContent value="unanswered" className="space-y-4 mt-6">
-          {mockQuestions
-            .filter((question) => question.answers === 0)
-            .map((question) => (
-              <QuestionCard key={question.id} question={question} />
-            ))}
-          {mockQuestions.filter((question) => question.answers === 0).length === 0 && (
-            <div className="text-center py-12 text-muted-foreground">
-              <Star className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>No unanswered questions found!</p>
-            </div>
-          )}
-        </TabsContent>
       </Tabs>
     </div>
   );
